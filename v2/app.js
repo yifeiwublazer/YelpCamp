@@ -14,7 +14,8 @@ mongoose.connect("mongodb+srv://webdev:k7vIjVgC5gmi9gy1@cluster0-afvjq.mongodb.n
 
 var campgroundSchema = new mongoose.Schema({
 	name: String,
-	image: String
+	image: String,
+	description: String
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
@@ -50,7 +51,7 @@ app.get("/campgrounds", (req, res) => {
 			console.log("Error");
 			console.log(err);
 		} else {
-			res.render("campgrounds", {campgrounds: allCampgrounds});
+			res.render("index", {campgrounds: allCampgrounds});
 		}
 	});
 	// res.render("campgrounds", {campgrounds: campgrounds});
@@ -58,8 +59,9 @@ app.get("/campgrounds", (req, res) => {
 
 app.post("/campgrounds", (req, res) => {
     var name = req.body.name;
-    var image = req.body.image;
-    var newCampground = {name: name, image: image};
+	var image = req.body.image;
+	var description = req.body.description;
+    var newCampground = {name: name, image: image, description: description};
 	// Create a new campground and save to DB
 	Campground.create(newCampground, (err, newlyCreated) => {
 		if(err){
@@ -73,6 +75,18 @@ app.post("/campgrounds", (req, res) => {
 
 app.get("/campgrounds/new", (req, res) => {
     res.render("new");
+});
+
+app.get("/campgrounds/:id", (req, res) => {
+	// find the campground with provied ID
+	Campground.findById(req.params.id, (err, foundCampground) => {
+		if(err){
+			console.log(err);
+		} else {
+			// render show template with that campground
+			res.render("show", {campground: foundCampground});
+		}
+	});
 });
 
 app.listen(3000, () => {
