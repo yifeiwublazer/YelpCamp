@@ -11,7 +11,7 @@ var seedDB        = require("./seeds");
 
 var commentRoutes    = require("./routes/comments"),
 	campgroundRoutes = require("./routes/campgrounds"),
-	indexRoutes     = require("./routes/index");
+	indexRoutes      = require("./routes/index");
 
 mongoose.connect("mongodb+srv://webdev:k7vIjVgC5gmi9gy1@cluster0-afvjq.mongodb.net/yelp_camp?retryWrites=true&w=majority", {
 	useNewUrlParser:true,
