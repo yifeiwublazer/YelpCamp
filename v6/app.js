@@ -2,6 +2,7 @@ const express     = require("express");
 const app         = express();
 const bodyParser  = require("body-parser");
 const mongoose    = require("mongoose");
+var flash         = require("connect-flash");
 var passport      = require("passport");
 var LocalStrategy = require("passport-local");
 var methodOverride = require("method-override");
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 // seedDB();
 
 // PASSPORT CONFIGURATION
@@ -44,6 +46,8 @@ passport.deserializeUser(User.deserializeUser());
 // for all the routes, add currentUser parameter to decide how to show navbar
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
 	next();
 });
 
